@@ -2,8 +2,8 @@
 
 return [
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=docker',
-    'username' => 'docker',
-    'password' => 'docker',
+    'dsn' => 'mysql:host=localhost;dbname=CurrencyConverter',
+    'username' => 'ConverterUser',
+    'password' => 'currency',
     'charset' => 'utf8',
 ];
