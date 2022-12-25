@@ -7,9 +7,9 @@ use yii\db\ActiveRecord;
 class Currency extends ActiveRecord
 {	
 	public function rules() {
-        return [
+        return 
+        [
           [['CharCode', 'Name', 'Nominal', 'Value', 'NumCode'], 'required' ],
-          // ['NumCode', 'int']
         ];
     }
 }

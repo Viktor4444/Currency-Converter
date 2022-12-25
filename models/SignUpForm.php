@@ -8,7 +8,8 @@ class SignupForm extends Model{
     public $password;
     
     public function rules() {
-        return [
+        return 
+        [
             [['username', 'password'], 'required', 'message' => 'Заполните поле'],
             ['username', 'unique', 'targetClass' => User::className()],
         ];

@@ -2,16 +2,16 @@
 
 namespace app\controllers;
 
+use yii;
 use yii\web\Controller;
 use yii\httpclient\Client;
-use yii\data\Pagination;
-use app\models\ConverterForm;
+use yii\filters\AccessControl;
+
+use app\models\User;
 use app\models\Currency;
 use app\models\LoginForm;
 use app\models\SignUpForm;
-use app\models\User;
-use yii\filters\AccessControl;
-use yii;
+use app\models\ConverterForm;
 
 
 
@@ -24,7 +24,6 @@ class ConverterController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                // 'only' => ['login', 'logout', 'signup'],
                 'rules' => [
                     [
                         'allow' => true,
@@ -87,7 +86,6 @@ class ConverterController extends Controller
 	        $user = new User();
 	        $user->username = $model->username;
 	        $user->password = \Yii::$app->security->generatePasswordHash($model->password);
-	        // echo '<pre>'; var_dump($user->beforeSave(['username' => $user->username])); die;
 	        Yii::$app->db->createCommand('INSERT user(username, password) VALUES (:username, :password)')
 					->bindValue(':username', $user->username)
 					->bindValue(':password', $user->password)
@@ -105,8 +103,6 @@ class ConverterController extends Controller
 		$currency = Currency::find()->one();
 		
 		$need_to_refresh = abs(strtotime($currency->dt) - strtotime($form_model->current_date)) > 86400;
-
-		// var_dump(abs(strtotime($currency->dt) - strtotime($form_model->current_date))); var_dump($need_to_refresh); exit;
 
 		if ($need_to_refresh)
 		{
@@ -127,8 +123,6 @@ class ConverterController extends Controller
 					$NumCode = $data[$i]['NumCode'];
 					$Value = floatval(str_replace(',', '.', $data[$i]['Value']));
 					$Nominal = floatval(str_replace(',', '.', $data[$i]['Nominal']));
-					// var_dump($Value); exit;
-					// $Name = (string)$data[$i]['Name'];
 					Yii::$app->db->createCommand('UPDATE currency SET Nominal=:Nominal, Value=:Value WHERE NumCode = :NumCode')
 						->bindValue(':Nominal', $Nominal)
 						->bindValue(':NumCode', $NumCode)
@@ -152,3 +146,4 @@ class ConverterController extends Controller
 
 		return $this->render('index', compact('form_model'));
 	}
+}

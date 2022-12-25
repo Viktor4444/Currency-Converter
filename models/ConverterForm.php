@@ -21,7 +21,8 @@ class ConverterForm extends Model
     public function rules() {
         return [
           [['FirstCurrency', 'SecondCurrency', 'current_date'], 'required' ],
-          ['FirstSumm', 'required', 'message'=>'Please enter an amount']
+          ['FirstSumm', 'required', 'message'=>'Please enter an amount'],
+          ['FirstSumm', 'number', 'message'=>'Amount must be a number(with dot separator)'],
         ];
     }
 

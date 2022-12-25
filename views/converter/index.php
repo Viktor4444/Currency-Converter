@@ -10,13 +10,16 @@ use app\models\Currency;
 <?php $form = ActiveForm::begin([]) ?>
 
 <div align=center>
+
     <H1>
         Hello!</br>
         You are on the site for currency conversion.
     </H1></br>
+
     <H2>
         Select the currency you want to convert from
     </H2>
+
     <div>
         <?php
             echo $form->field($form_model, 'FirstCurrency', ['enableLabel' => false])->dropdownList(
@@ -29,9 +32,11 @@ use app\models\Currency;
             );
         ?>
     </div>
+
     <H2>
         Enter the amount to convert
     </H2>
+
     <div>
         <?= $form->field($form_model, 'FirstSumm', ['enableLabel' => false])
                 ->textInput(
@@ -39,9 +44,11 @@ use app\models\Currency;
                     );
         ?>
     </div>
+
     <H2>
         And select the currency you want to convert to
     </H2>
+
     <div>
         <?php
             echo $form->field($form_model, 'SecondCurrency', ['enableLabel' => false])->dropdownList(
@@ -53,6 +60,7 @@ use app\models\Currency;
             );
         ?>
     </div>
+    
     <div>
         <?= Html::submitButton('Convert', ['class' => 'btn btn-primary']) ?>
     </div></br>
