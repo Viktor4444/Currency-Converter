@@ -75,7 +75,7 @@ class ConverterController extends Controller
 	        return $this->goHome();
 	    }
 
-    return $this->render('signup', compact('loginFormModel'));
+    return $this->render('signup', compact('signupFormModel'));
     }
 
 	public function actionIndex()

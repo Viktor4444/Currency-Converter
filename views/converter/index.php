@@ -22,7 +22,7 @@ use app\models\Currency;
 
     <div>
         <?php
-            echo $form->field($form_model, 'FirstCurrency', ['enableLabel' => false])->dropdownList(
+            echo $form->field($converterFormModel, 'firstCurrency', ['enableLabel' => false])->dropdownList(
                 Currency::find()->select(['CharCode'])->indexBy('CharCode')->column(),
                     [
                         'style' => 'width:150px !important', 
@@ -38,7 +38,7 @@ use app\models\Currency;
     </H2>
 
     <div>
-        <?= $form->field($form_model, 'FirstSumm', ['enableLabel' => false])
+        <?= $form->field($converterFormModel, 'firstSumm', ['enableLabel' => false])
                 ->textInput(
                     ['style'=>'width:20%']
                     );
@@ -51,7 +51,7 @@ use app\models\Currency;
 
     <div>
         <?php
-            echo $form->field($form_model, 'SecondCurrency', ['enableLabel' => false])->dropdownList(
+            echo $form->field($converterFormModel, 'secondCurrency', ['enableLabel' => false])->dropdownList(
                 Currency::find()->select(['CharCode'])->indexBy('CharCode')->column(),
                     [
                         'style' => 'width:150px !important; color: red, width: auto',
@@ -65,12 +65,12 @@ use app\models\Currency;
         <?= Html::submitButton('Convert', ['class' => 'btn btn-primary']) ?>
     </div></br>
 
-    <?php if ($form_model->SecondSumm): ?>
+    <?php if ($converterFormModel->secondSumm): ?>
         <div style="background-color:lime;">
             <H2>
                 Result:
                 <?php
-                    echo "$form_model->FirstSumm $form_model->FirstCurrency is $form_model->SecondSumm $form_model->SecondCurrency"
+                    echo "$converterFormModel->firstSumm $converterFormModel->firstCurrency is $converterFormModel->secondSumm $converterFormModel->secondCurrency"
                 ?>
             </H2>
         </div>
