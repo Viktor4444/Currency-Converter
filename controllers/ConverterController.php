@@ -2,18 +2,13 @@
 
 namespace app\controllers;
 
-use yii;
+use Yii;
 use yii\web\Controller;
-use yii\httpclient\Client;
 use yii\filters\AccessControl;
 
-use app\models\User;
-use app\models\Currency;
 use app\models\LoginForm;
 use app\models\SignUpForm;
 use app\models\ConverterForm;
-
-
 
 class ConverterController extends Controller
 {
@@ -55,95 +50,43 @@ class ConverterController extends Controller
 
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        $loginFormModel = new LoginForm();
+        if ($loginFormModel->load(Yii::$app->request->post()) && $loginFormModel->login()) {
             return $this->goBack();
         }
 
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+        return $this->render(
+            'login', ['model' => $loginFormModel]
+        );
     }
 
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
 
-    public function actionSignup(){
-	    if (!Yii::$app->user->isGuest) {
+    public function actionSignup()
+    {
+	    $signupFormModel = new SignupForm();
+
+	    if ($signupFormModel->load(\Yii::$app->request->post()) && $signupFormModel->validate()){
+	        $signupFormModel->newUser();
 	        return $this->goHome();
 	    }
-	    $model = new SignupForm();
-	    if($model->load(\Yii::$app->request->post()) && $model->validate()){
-	        $user = new User();
-	        $user->username = $model->username;
-	        $user->password = \Yii::$app->security->generatePasswordHash($model->password);
-	        Yii::$app->db->createCommand('INSERT user(username, password) VALUES (:username, :password)')
-					->bindValue(':username', $user->username)
-					->bindValue(':password', $user->password)
-					->execute();
-			return $this->goHome();
-	    }
 
-    return $this->render('signup', compact('model'));
-}
+    return $this->render('signup', compact('loginFormModel'));
+    }
 
 	public function actionIndex()
 	{
+		$converterFormModel = new ConverterForm();
+		$converterFormModel->checkingForUpdates();
 
-		$form_model = new ConverterForm();
-		$currency = Currency::find()->one();
-		
-		$need_to_refresh = abs(strtotime($currency->dt) - strtotime($form_model->current_date)) > 86400;
-
-		if ($need_to_refresh)
-		{
-			$client = new Client([
-
-	            'baseUrl' => 'https://www.cbr.ru/scripts/XML_daily.asp',
-	            // http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/200
-
-	        ]);
-
-			$response = $client->createRequest()
-			    ->setMethod('get')
-			    ->send();
-
-			if ($response->isOk) {
-				$data = $response->getData()['Valute'];
-				for ($i = 1; $i < count($data); $i++) {
-					$NumCode = $data[$i]['NumCode'];
-					$Value = floatval(str_replace(',', '.', $data[$i]['Value']));
-					$Nominal = floatval(str_replace(',', '.', $data[$i]['Nominal']));
-					Yii::$app->db->createCommand('UPDATE currency SET Nominal=:Nominal, Value=:Value WHERE NumCode = :NumCode')
-						->bindValue(':Nominal', $Nominal)
-						->bindValue(':NumCode', $NumCode)
-						->bindValue(':Value', $Value)
-						->execute();
-				}
-			}
+		if($converterFormModel->load(\Yii::$app->request->post(), 'ConverterForm')) {
+			$converterFormModel->convert();
 		}
 
-
-		
-		if($form_model->load(\Yii::$app->request->post(), 'ConverterForm')) {
-			$FirstCurrencyProperties = Currency::findOne( $form_model->FirstCurrency);
-			$SecondCurrencyProperties = Currency::findOne($form_model->SecondCurrency);
-			$form_model->SecondSumm = $form_model->FirstSumm 
-			* $FirstCurrencyProperties['Value'] 
-			* $SecondCurrencyProperties['Nominal'] 
-			/ $FirstCurrencyProperties['Nominal'] 
-			/ $SecondCurrencyProperties['Value'];
-		}
-
-		return $this->render('index', compact('form_model'));
+		return $this->render('index', compact('converterFormModel'));
 	}
 }
