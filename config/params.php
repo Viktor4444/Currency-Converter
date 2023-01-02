@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'adminEmail' => 'admin@example.com',
-    'senderEmail' => 'noreply@example.com',
-    'senderName' => 'Example.com mailer',
+    'TIME_TO_REFRESH' => 86400,
+    'DAILY_EXCHANGE_RATES_URL' => "https://www.cbr.ru/scripts/XML_daily.asp"
 ];
