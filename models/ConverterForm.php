@@ -20,7 +20,7 @@ class ConverterForm extends Model
     public function init()
     {
         parent::init();
-        $this->currentDate = date("Y-m-d H:i:s");
+        $this->currentDate = strtotime(date("Y-m-d H:i:s"));
     }
 
     public function rules()
@@ -34,8 +34,9 @@ class ConverterForm extends Model
 
     public function checkingForUpdates()
     {
-        $currency = Currency::find()->one();
-        $needToUpdateExchangeRates = abs(strtotime($currency->dt) - strtotime($this->currentDate)) > Yii::$app->params['TIME_TO_REFRESH'];
+        $exchangeRatesLatestUpdateDate = strtotime(Currency::getLatestUpdateDate());
+        $timeBetween = abs($exchangeRatesLatestUpdateDate - $this->currentDate);
+        $needToUpdateExchangeRates = $timeBetween > Yii::$app->params['TIME_TO_REFRESH_EXCHANGE_RATES'];
 
         if ($needToUpdateExchangeRates){
 

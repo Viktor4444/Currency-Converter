@@ -4,10 +4,13 @@
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use app\models\Currency;
-
 ?>
 
-<?php $form = ActiveForm::begin([]) ?>
+<?php
+$form = ActiveForm::begin([]);
+
+$currencyCharCodes = Currency::getСurrencyCharCodes();
+?>
 
 <div align=center>
 
@@ -22,14 +25,16 @@ use app\models\Currency;
 
     <div>
         <?php
-            echo $form->field($converterFormModel, 'firstCurrency', ['enableLabel' => false])->dropdownList(
-                Currency::find()->select(['CharCode'])->indexBy('CharCode')->column(),
-                    [
-                        'style' => 'width:150px !important', 
-                        'prompt' => NULL,
+            echo $form
+                    ->field($converterFormModel, 'firstCurrency', ['enableLabel' => false])
+                    ->dropdownList(
+                        $currencyCharCodes,
+                            [
+                                'style' => 'width:150px !important',
+                                'prompt' => NULL,
 
-                    ]
-            );
+                            ]
+                        );
         ?>
     </div>
 
@@ -51,13 +56,16 @@ use app\models\Currency;
 
     <div>
         <?php
-            echo $form->field($converterFormModel, 'secondCurrency', ['enableLabel' => false])->dropdownList(
-                Currency::find()->select(['CharCode'])->indexBy('CharCode')->column(),
-                    [
-                        'style' => 'width:150px !important; color: red, width: auto',
-                        'prompt' =>  NULL,
-                    ]
-            );
+            echo $form
+                    ->field($converterFormModel, 'secondCurrency', ['enableLabel' => false])
+                    ->dropdownList(
+                        $currencyCharCodes,
+                            [
+                                'style' => 'width:150px !important',
+                                'prompt' => NULL,
+
+                            ]
+                        );
         ?>
     </div>
     
@@ -78,6 +86,4 @@ use app\models\Currency;
 
 </div>
 
-
 <?php ActiveForm::end() ?> 
-
