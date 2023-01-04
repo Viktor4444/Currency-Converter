@@ -27,7 +27,7 @@ class Currency extends ActiveRecord
 
     public static function getLatestUpdateDate()
     {
-        LatestDateUpdater::getLatestUpdateDate(self::getTableSchema()->fullName);
+        return LatestDateUpdater::getLatestUpdateDate(self::getTableSchema()->fullName);
     }
 
     public static function setLatestUpdateDate($newDate)
