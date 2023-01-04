@@ -10,6 +10,10 @@ use app\models\LoginForm;
 use app\models\SignUpForm;
 use app\models\ConverterForm;
 
+
+/**
+ * Main conversion site controller
+ */
 class ConverterController extends Controller
 {
 	public $layout = 'converter';
@@ -81,6 +85,9 @@ class ConverterController extends Controller
     return $this->render('signup', compact('signupFormModel'));
     }
 
+    /**
+     * main page
+     */
 	public function actionIndex()
 	{
 		$converterFormModel = new ConverterForm();

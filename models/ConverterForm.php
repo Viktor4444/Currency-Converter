@@ -8,6 +8,9 @@ use yii\httpclient\Client;
 
 use app\models\Currency;
 
+/**
+ * Main page forms (currency conversion page)
+ */
 class ConverterForm extends Model
 {   
     public $firstCurrency;
@@ -17,6 +20,9 @@ class ConverterForm extends Model
 
     public $currentDate;
 
+    /**
+     * Every time you go to the page, the current date is written to the "currentDate" variable
+     */
     public function init()
     {
         parent::init();
@@ -32,6 +38,13 @@ class ConverterForm extends Model
         ];
     }
 
+    /**
+     * Checking the need to update exchange rates
+     *
+     * The last date of updating the "currency" table is compared with the current date
+     * and, if necessary (once a day), the data is updated
+     * from the website of the Central Bank of the Russian Federation.
+     */
     public function checkingForUpdates()
     {
         $exchangeRatesLatestUpdateDate = Currency::getLatestUpdateDate();
@@ -59,6 +72,15 @@ class ConverterForm extends Model
         }
     }
 
+    /**
+     * Function to convert some amount from "firstCurrency" to "secondCurrency"
+     *
+     * Formula for calculation:
+     * the amount entered by the user is multiplied
+     * by the exchange rate('Value') from which the conversion takes place
+     * and divided by its 'Nominal', then divided by the exchange rate('Value')
+     * into which the conversion takes place and multiplied by its 'Nominal'.
+     */
     public function convert()
     {
         $firstCurrencyProperties = Currency::findOne($this->firstCurrency);

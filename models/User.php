@@ -9,6 +9,9 @@ use yii\web\IdentityInterface;
 
 use app\models\LatestDateUpdater;
 
+/**
+ * Standard yii2 framework class for authorization
+ */
 class User extends ActiveRecord implements IdentityInterface
 {
     public $authKey;
@@ -82,11 +85,21 @@ class User extends ActiveRecord implements IdentityInterface
         return \Yii::$app->security->validatePassword($password, $this->password);
     }
 
+    /**
+     * Getting the latest update/change time of the "user" table
+     *
+     * @static
+     * @return data
+     */
     public static function getLatestUpdateDate()
     {
         return LatestDateUpdater::getLatestUpdateDate(self::getTableSchema()->fullName);
     }
 
+    /**
+     * Setting the latest update/change time of the "user" table
+     * @static
+     */
     public static function setLatestUpdateDate()
     {
         LatestDateUpdater::setLatestUpdateDate(self::getTableSchema()->fullName);
