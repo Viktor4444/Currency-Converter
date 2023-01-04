@@ -20,7 +20,7 @@ class ConverterForm extends Model
     public function init()
     {
         parent::init();
-        $this->currentDate = strtotime(date("Y-m-d H:i:s"));
+        $this->currentDate = date("Y-m-d");
     }
 
     public function rules()
@@ -34,9 +34,8 @@ class ConverterForm extends Model
 
     public function checkingForUpdates()
     {
-        $exchangeRatesLatestUpdateDate = strtotime(Currency::getLatestUpdateDate());
-        $timeBetween = abs($exchangeRatesLatestUpdateDate - $this->currentDate);
-        $needToUpdateExchangeRates = $timeBetween > Yii::$app->params['TIME_TO_REFRESH_EXCHANGE_RATES'];
+        $exchangeRatesLatestUpdateDate = Currency::getLatestUpdateDate();
+        $needToUpdateExchangeRates = $exchangeRatesLatestUpdateDate != $this->currentDate;
 
         if ($needToUpdateExchangeRates){
 
@@ -48,17 +47,15 @@ class ConverterForm extends Model
                 $exchangeRates = $response->getData()['Valute'];
 
                 foreach ($exchangeRates as $exchangeRate){
-                    $numCode = $exchangeRate['NumCode'];
-                    $value = floatval(str_replace(',', '.', $exchangeRate['Value']));
-                    $nominal = floatval(str_replace(',', '.', $exchangeRate['Nominal']));
-
-                    Yii::$app->db->createCommand('UPDATE currency SET Nominal=:nominal, Value=:value WHERE NumCode = :numCode')
-                        ->bindValue(':nominal', $nominal)
-                        ->bindValue(':numCode', $numCode)
-                        ->bindValue(':value', $value)
-                        ->execute();
+                    $currency = Currency::findOne($exchangeRate['CharCode']);
+                    if (!$currency){
+                        $currency = new Currency();
+                    }
+                    $currency->load($exchangeRate, '');
+                    $currency->save();
                 }
             }
+            Currency::setLatestUpdateDate($this->currentDate);
         }
     }
 

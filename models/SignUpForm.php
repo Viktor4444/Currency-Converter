@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 
 use app\models\User;
+use app\models\LatestDateUpdater;
  
 class SignupForm extends Model
 {
@@ -20,16 +21,18 @@ class SignupForm extends Model
         ];
     }
 
-    public function newUser()
+    public function signup()
     {
         $user = new User();
         $user->username = $this->username;
         $user->password = \Yii::$app->security->generatePasswordHash($this->password);
 
-        Yii::$app->db
-            ->createCommand('INSERT user(username, password) VALUES (:username, :password)')
-            ->bindValue(':username', $user->username)
-            ->bindValue(':password', $user->password)
-            ->execute();
+        if ($user->save()){
+            User::setLatestUpdateDate();
+            return $user;
+        }
+        else {
+            return null;
+        }
     }
 }

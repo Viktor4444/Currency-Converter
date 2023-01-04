@@ -1,37 +1,18 @@
 <?php
 
 namespace app\models;
+
 use Yii;
 use yii\helpers\Security;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
+use app\models\LatestDateUpdater;
+
 class User extends ActiveRecord implements IdentityInterface
 {
-    // public $id;
-    // public $username;
-    // public $password;
     public $authKey;
     public $accessToken;
-
-
-    // private static $users = [
-    //     '100' => [
-    //         'id' => '100',
-    //         'username' => 'admin',
-    //         'password' => 'admin',
-    //         'authKey' => 'test100key',
-    //         'accessToken' => '100-token',
-    //     ],
-    //     '101' => [
-    //         'id' => '101',
-    //         'username' => 'demo',
-    //         'password' => 'demo',
-    //         'authKey' => 'test101key',
-    //         'accessToken' => '101-token',
-    //     ],
-    // ];
-
 
     /**
      * {@inheritdoc}
@@ -99,5 +80,15 @@ class User extends ActiveRecord implements IdentityInterface
     public function validatePassword($password)
     {
         return \Yii::$app->security->validatePassword($password, $this->password);
+    }
+
+    public static function getLatestUpdateDate()
+    {
+        LatestDateUpdater::getLatestUpdateDate(self::getTableSchema()->fullName);
+    }
+
+    public static function setLatestUpdateDate()
+    {
+        LatestDateUpdater::setLatestUpdateDate(self::getTableSchema()->fullName);
     }
 }

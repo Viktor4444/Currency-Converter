@@ -4,13 +4,20 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
+use app\models\LatestDateUpdater;
+
 class Currency extends ActiveRecord
 {	
     public function rules()
     {
         return [
-            [['CharCode', 'Name', 'Nominal', 'Value', 'NumCode'], 'required'],
+            [['NumCode', 'CharCode', 'Name', 'Nominal', 'Value'], 'required'],
         ];
+    }
+
+    public static function tableName()
+    {
+        return '{{%currency}}';
     }
 
     public static function getСurrencyCharCodes()
@@ -20,6 +27,11 @@ class Currency extends ActiveRecord
 
     public static function getLatestUpdateDate()
     {
-        return self::find()->one()->dt;
+        LatestDateUpdater::getLatestUpdateDate(self::getTableSchema()->fullName);
+    }
+
+    public static function setLatestUpdateDate($newDate)
+    {
+        LatestDateUpdater::setLatestUpdateDate(self::getTableSchema()->fullName, $newDate);
     }
 }

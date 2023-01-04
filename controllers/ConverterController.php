@@ -71,8 +71,11 @@ class ConverterController extends Controller
 	    $signupFormModel = new SignupForm();
 
 	    if ($signupFormModel->load(\Yii::$app->request->post()) && $signupFormModel->validate()){
-	        $signupFormModel->newUser();
-	        return $this->goHome();
+	        if ($user = $signupFormModel->signup()){
+	            if (Yii::$app->getUser()->login($user)) {
+                    return $this->goHome();
+                }
+            }
 	    }
 
     return $this->render('signup', compact('signupFormModel'));
