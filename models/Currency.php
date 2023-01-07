@@ -19,9 +19,9 @@ class Currency extends ActiveRecord
     public function rules()
     {
         return [
-            [['NumCode', 'CharCode', 'Name', 'Nominal', 'Value'], 'required'],
-            ['NumCode', 'number'],
-            [['Value', 'Nominal'], 'filter', 'filter' => function($value){
+            [['num_code', 'char_code', 'name', 'nominal', 'value'], 'required'],
+            ['num_code', 'number'],
+            [['value', 'nominal'], 'filter', 'filter' => function($value){
                 $value = str_replace(',', '.', $value);
                 return floatval($value);
             }],
@@ -41,7 +41,7 @@ class Currency extends ActiveRecord
      */
     public static function getСurrencyCharCodes()
     {
-        return self::find()->select(['CharCode'])->indexBy('CharCode')->column();
+        return self::find()->select(['char_code'])->indexBy('char_code')->column();
     }
 
     /**

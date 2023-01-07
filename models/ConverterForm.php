@@ -86,9 +86,9 @@ class ConverterForm extends Model
         $firstCurrencyProperties = Currency::findOne($this->firstCurrency);
         $secondCurrencyProperties = Currency::findOne($this->secondCurrency);
         $this->secondSumm = $this->firstSumm
-            * $firstCurrencyProperties['Value']
-            * $secondCurrencyProperties['Nominal']
-            / $firstCurrencyProperties['Nominal']
-            / $secondCurrencyProperties['Value'];
+            * $firstCurrencyProperties['value']
+            * $secondCurrencyProperties['nominal']
+            / $firstCurrencyProperties['nominal']
+            / $secondCurrencyProperties['value'];
     }
 }

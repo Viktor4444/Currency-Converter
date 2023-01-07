@@ -16,13 +16,13 @@ class LatestDateUpdater extends ActiveRecord
     public function rules()
     {
         return [
-            [['TableName'], 'required'],
+            [['table_name'], 'required'],
         ];
     }
 
     public static function tableName()
     {
-        return '{{%LatestTablesUpdateDate}}';
+        return '{{%latest_tables_update_date}}';
     }
 
     /**
@@ -34,7 +34,7 @@ class LatestDateUpdater extends ActiveRecord
      */
     public static function getLatestUpdateDate($tableName)
     {
-        return static::findOne(['TableName' => $tableName])->LatestUpdate;
+        return static::findOne(['table_name' => $tableName])->latest_update;
     }
 
     /**
@@ -49,8 +49,8 @@ class LatestDateUpdater extends ActiveRecord
         if (!$newDate){
             $newDate = date("Y-m-d");
         }
-        $latestUpdateDateTable = static::findOne(['TableName' => $tableName]);
-        $latestUpdateDateTable->LatestUpdate = $newDate;
+        $latestUpdateDateTable = static::findOne(['table_name' => $tableName]);
+        $latestUpdateDateTable->latest_update = $newDate;
         $latestUpdateDateTable->save();
     }
 }
