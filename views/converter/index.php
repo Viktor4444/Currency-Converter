@@ -4,6 +4,12 @@
 use yii\helpers\Html;
 use yii\bootstrap5\ActiveForm;
 use app\models\Currency;
+
+/** @var yii\web\View $this */
+/** @var yii\bootstrap5\ActiveForm $form */
+/** @var app\models\ConverterForm $converterFormModel */
+
+$this->title = 'CurCon - The Coolest Real-Time Currency Converter, Ever!';
 ?>
 
 <?php
@@ -78,7 +84,8 @@ $currencyCharCodes = Currency::getСurrencyCharCodes();
             <H2>
                 Result:
                 <?php
-                    echo "$converterFormModel->firstSumm $converterFormModel->firstCurrency is $converterFormModel->secondSumm $converterFormModel->secondCurrency"
+                    echo "$converterFormModel->firstSumm $converterFormModel->firstCurrency
+                    is $converterFormModel->secondSumm $converterFormModel->secondCurrency"
                 ?>
             </H2>
         </div>

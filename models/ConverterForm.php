@@ -2,7 +2,6 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 use yii\httpclient\Client;
 
@@ -12,16 +11,44 @@ use app\models\Currency;
  * Main page forms (currency conversion page)
  */
 class ConverterForm extends Model
-{   
+{
+    /**
+     * string code of the first currency
+     * 
+     * @var string
+     */
     public $firstCurrency;
+
+    /**
+     * string code of the second currency
+     * 
+     * @var string
+     */
     public $secondCurrency;
+
+    /**
+     * first currency conversion amount
+     * 
+     * @var string
+     */
     public $firstSumm;
+
+    /**
+     * second currency conversion amount
+     * 
+     * @var float
+     */
     public $secondSumm;
 
+    /**
+     * @var string
+     */
     public $currentDate;
 
     /**
      * Every time you go to the page, the current date is written to the "currentDate" variable
+     * 
+     * {@inheritdoc}
      */
     public function init()
     {
@@ -29,12 +56,19 @@ class ConverterForm extends Model
         $this->currentDate = date("Y-m-d");
     }
 
+    /**
+     * {@inheritdoc}
+     * @return array the validation rules.
+     */
     public function rules()
     {
         return [
-          [['firstCurrency', 'secondCurrency', 'currentDate'], 'required' ],
-          ['firstSumm', 'required', 'message' => 'Please enter an amount'],
-          ['firstSumm', 'number', 'message' => 'Amount must be a number(with dot separator)'],
+            // firstCurrency, secondCurrency and currentDate are required
+            [['firstCurrency', 'secondCurrency', 'currentDate'], 'required' ],
+            // firstSumm is required
+            ['firstSumm', 'required', 'message' => 'Please enter an amount'],
+            // firstSumm must be a numeric value
+            ['firstSumm', 'number', 'message' => 'Amount must be a number(with dot separator)'],
         ];
     }
 
@@ -53,7 +87,7 @@ class ConverterForm extends Model
         if ($needToUpdateExchangeRates){
 
             $client = new Client();
-            $response = $client->get(Yii::$app->params['DAILY_EXCHANGE_RATES_URL'])->send();
+            $response = $client->get(\Yii::$app->params['DAILY_EXCHANGE_RATES_URL'])->send();
 
             if ($response->isOk){
 
@@ -85,6 +119,7 @@ class ConverterForm extends Model
     {
         $firstCurrencyProperties = Currency::findOne($this->firstCurrency);
         $secondCurrencyProperties = Currency::findOne($this->secondCurrency);
+
         $this->secondSumm = $this->firstSumm
             * $firstCurrencyProperties['value']
             * $secondCurrencyProperties['nominal']

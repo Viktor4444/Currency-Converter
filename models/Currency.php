@@ -13,14 +13,27 @@ use app\models\LatestDateUpdater;
  *  their name, symbolic code, number code, exchange rate against the ruble.
  *  With this class, we can get and update this data,
  *  as well as record the date the data was last modified.
+ *
+ * @property integer $num_code
+ * @property string $char_code
+ * @property string $name
+ * @property float $nominal
+ * @property float $value
  */
 class Currency extends ActiveRecord
-{	
+{
+    /**
+     * {@inheritdoc}
+     * @return array the validation rules.
+     */
     public function rules()
     {
         return [
+            // num_code, char_code, name, nominal and value are required
             [['num_code', 'char_code', 'name', 'nominal', 'value'], 'required'],
+            // num_code must be a numeric value
             ['num_code', 'number'],
+            // value and nominal must be a numeric real value
             [['value', 'nominal'], 'filter', 'filter' => function($value){
                 $value = str_replace(',', '.', $value);
                 return floatval($value);
@@ -28,6 +41,9 @@ class Currency extends ActiveRecord
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return '{{%currency}}';
@@ -45,10 +61,9 @@ class Currency extends ActiveRecord
     }
 
     /**
-     * Getting the latest update/change time of the "currency" table
-     *
      * @static
-     * @return date
+     * @see LatestDateUpdater::$getLatestUpdateDate
+     * @return string
      */
     public static function getLatestUpdateDate()
     {
@@ -56,10 +71,9 @@ class Currency extends ActiveRecord
     }
 
     /**
-     * Setting the latest update/change time of the "currency" table
-     *
      * @static
-     * @param date $newDate new update date(usually the current date)
+     * @see LatestDateUpdater::$setLatestUpdateDate
+     * @param string $newDate new update date(usually the current date)
      */
     public static function setLatestUpdateDate($newDate)
     {

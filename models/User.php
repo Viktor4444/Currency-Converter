@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use Yii;
-use yii\helpers\Security;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -11,6 +9,11 @@ use app\models\LatestDateUpdater;
 
 /**
  * Standard yii2 framework class for authorization
+ *
+ * @property int $id
+ * @property string $username
+ * @property string $password
+ * @property string $role
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -86,10 +89,9 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Getting the latest update/change time of the "user" table
-     *
      * @static
-     * @return data
+     * @see LatestDateUpdater::$getLatestUpdateDate
+     * @return string
      */
     public static function getLatestUpdateDate()
     {
@@ -97,8 +99,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Setting the latest update/change time of the "user" table
      * @static
+     * @see LatestDateUpdater::$setLatestUpdateDate
      */
     public static function setLatestUpdateDate()
     {

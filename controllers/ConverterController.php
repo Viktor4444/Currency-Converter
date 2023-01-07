@@ -10,14 +10,20 @@ use app\models\LoginForm;
 use app\models\SignUpForm;
 use app\models\ConverterForm;
 
-
 /**
  * Main conversion site controller
  */
 class ConverterController extends Controller
 {
+	/**
+	 * @link https://www.yiiframework.com/doc/api/2.0/yii-base-controller#$layout-detail Documentation of $layout
+	 * @var  string|null|false
+	 */
 	public $layout = 'converter';
 
+    /**
+     * {@inheritdoc}
+     */
 	public function behaviors()
     {
         return [
@@ -39,6 +45,9 @@ class ConverterController extends Controller
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function actions()
     {
         return [
@@ -52,29 +61,42 @@ class ConverterController extends Controller
         ];
     }
 
+    /**
+     * Login action.
+     *
+     * @return Response|string
+     */
     public function actionLogin()
     {
         $loginFormModel = new LoginForm();
-        if ($loginFormModel->load(Yii::$app->request->post()) && $loginFormModel->login()) {
+        if ($loginFormModel->load(Yii::$app->request->post()) && $loginFormModel->login()){
             return $this->goBack();
         }
 
-        return $this->render(
-            'login', ['model' => $loginFormModel]
-        );
+        return $this->render('login', compact('loginFormModel'));
     }
 
+    /**
+     * Logout action.
+     *
+     * @return Response
+     */
     public function actionLogout()
     {
         Yii::$app->user->logout();
         return $this->goHome();
     }
 
+    /**
+     * Signup action.
+     *
+     * @return Response|string
+     */
     public function actionSignup()
     {
 	    $signupFormModel = new SignupForm();
 
-	    if ($signupFormModel->load(\Yii::$app->request->post()) && $signupFormModel->validate()){
+	    if ($signupFormModel->load(Yii::$app->request->post()) && $signupFormModel->validate()){
 	        if ($user = $signupFormModel->signup()){
 	            if (Yii::$app->getUser()->login($user)) {
                     return $this->goHome();
@@ -86,14 +108,16 @@ class ConverterController extends Controller
     }
 
     /**
-     * main page
+     * Displays homepage.
+     *
+     * @return string
      */
 	public function actionIndex()
 	{
 		$converterFormModel = new ConverterForm();
 		$converterFormModel->checkingForUpdates();
 
-		if($converterFormModel->load(\Yii::$app->request->post(), 'ConverterForm')) {
+		if($converterFormModel->load(Yii::$app->request->post(), 'ConverterForm')){
 			$converterFormModel->convert();
 		}
 

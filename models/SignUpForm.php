@@ -2,24 +2,35 @@
 
 namespace app\models;
 
-use Yii;
 use yii\base\Model;
 
 use app\models\User;
-use app\models\LatestDateUpdater;
  
 /**
  * Registration page form
  */
 class SignupForm extends Model
 {
+    /**
+     * @var string
+     */
     public $username;
+
+    /**
+     * @var string
+     */
     public $password;
     
+    /**
+     * {@inheritdoc}
+     * @return array the validation rules.
+     */
     public function rules()
     {
         return [
+            // username and password are both required
             [['username', 'password'], 'required'],
+            // username must be unique
             ['username', 'unique', 'targetClass' => User::className()],
         ];
     }
