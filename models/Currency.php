@@ -20,6 +20,11 @@ class Currency extends ActiveRecord
     {
         return [
             [['NumCode', 'CharCode', 'Name', 'Nominal', 'Value'], 'required'],
+            ['NumCode', 'number'],
+            [['Value', 'Nominal'], 'filter', 'filter' => function($value){
+                $value = str_replace(',', '.', $value);
+                return floatval($value);
+            }],
         ];
     }
 
