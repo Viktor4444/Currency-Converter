@@ -50,14 +50,15 @@ $ composer update
 You need to import the dump into your mysql server:
 
 ```sh
-$ sudo mysqldump -u root -p CurrencyConverter < CurCon.sql
+$ sudo mysql -u root -p -e "create database currency_converter";
+$ sudo mysql -u root -p currency_converter < CurCon.sql
 ```
 
 You also need to create a new user and give him access rights to the required table:
 
 ```sql
 CREATE USER 'ConverterUser'@'%' IDENTIFIED BY 'currency';
-GRANT ALL PRIVILEGES ON `CurrencyConverter`.* TO 'ConverterUser'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON `currency_converter`.* TO 'ConverterUser'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 ```
 
