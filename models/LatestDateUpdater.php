@@ -11,6 +11,10 @@ use yii\db\ActiveRecord;
  * were made to all tables in the database.
  * This class allows you to track and modify the corresponding data.
  *
+ * @internal Important note: this class uses database column and table descriptions
+ *  whose names use snake case,
+ *  so the style of variable names in the code may differ
+ *
  * {@inheritdoc}
  * @property int $table_id
  * @property string $table_name
@@ -32,6 +36,8 @@ class LatestDateUpdater extends ActiveRecord
 
     /**
      * {@inheritdoc}
+     * @static
+     * @return string name of table in database
      */
     public static function tableName()
     {
@@ -42,8 +48,8 @@ class LatestDateUpdater extends ActiveRecord
      * This method returns the latest update date of the table by its name
      *
      * @static
-     * @param  str $tableName table name in database
-     * @return data            date the table was last updated
+     * @param  string $tableName table name in database
+     * @return string            date the table was last updated
      */
     public static function getLatestUpdateDate($tableName)
     {
@@ -54,8 +60,8 @@ class LatestDateUpdater extends ActiveRecord
      * This method updates the last modified date of the table by its name
      *
      * @static
-     * @param str $tableName the name of the table in which the changes were made
-     * @param [type] $newDate   date of the change. if no parameter is passed, sets the current date
+     * @param string $tableName the name of the table in which the changes were made
+     * @param string $newDate [null]   date of the change. if no parameter is passed, sets the current date
      */
     public static function setLatestUpdateDate($tableName, $newDate=null)
     {

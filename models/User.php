@@ -10,6 +10,10 @@ use app\models\LatestDateUpdater;
 /**
  * Standard yii2 framework class for authorization
  *
+ * @internal Important note: this class uses database column and table descriptions
+ *  whose names use snake case,
+ *  so the style of variable names in the code may differ
+ *
  * @property int $id
  * @property string $username
  * @property string $password

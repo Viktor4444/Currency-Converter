@@ -14,6 +14,10 @@ use app\models\LatestDateUpdater;
  *  With this class, we can get and update this data,
  *  as well as record the date the data was last modified.
  *
+ * @internal Important note: this class uses database column and table descriptions
+ *  whose names use snake case,
+ *  so the style of variable names in the code may differ
+ *
  * @property integer $num_code
  * @property string $char_code
  * @property string $name
@@ -43,6 +47,8 @@ class Currency extends ActiveRecord
 
     /**
      * {@inheritdoc}
+     * @static
+     * @return string name of table in database
      */
     public static function tableName()
     {

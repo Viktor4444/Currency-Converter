@@ -13,28 +13,28 @@ use app\models\Currency;
 class ConverterForm extends Model
 {
     /**
-     * string code of the first currency
+     * String code of the first currency
      * 
      * @var string
      */
     public $firstCurrency;
 
     /**
-     * string code of the second currency
+     * String code of the second currency
      * 
      * @var string
      */
     public $secondCurrency;
 
     /**
-     * first currency conversion amount
+     * First currency conversion amount
      * 
      * @var string
      */
     public $firstSumm;
 
     /**
-     * second currency conversion amount
+     * Second currency conversion amount
      * 
      * @var float
      */
@@ -114,6 +114,9 @@ class ConverterForm extends Model
      * by the exchange rate('Value') from which the conversion takes place
      * and divided by its 'Nominal', then divided by the exchange rate('Value')
      * into which the conversion takes place and multiplied by its 'Nominal'.
+     *
+     * @todo reconsider the logic and the possibility of moving calculations into the "Currency" class
+     * @todo add a divide-by-zero check
      */
     public function convert()
     {
