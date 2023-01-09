@@ -79,7 +79,7 @@ class ConverterForm extends Model
      * and, if necessary (once a day), the data is updated
      * from the website of the Central Bank of the Russian Federation.
      */
-    public function checkingForUpdates()
+    public function checkForUpdates()
     {
         $exchangeRatesLatestUpdateDate = Currency::getLatestUpdateDate();
         $needToUpdateExchangeRates = $exchangeRatesLatestUpdateDate != $this->currentDate;

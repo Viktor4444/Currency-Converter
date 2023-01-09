@@ -115,7 +115,7 @@ class ConverterController extends Controller
 	public function actionIndex()
 	{
 		$converterFormModel = new ConverterForm();
-		$converterFormModel->checkingForUpdates();
+		$converterFormModel->checkForUpdates();
 
 		if($converterFormModel->load(Yii::$app->request->post(), 'ConverterForm')){
 			$converterFormModel->convert();

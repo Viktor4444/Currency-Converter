@@ -50,8 +50,6 @@ class SignupForm extends Model
             User::setLatestUpdateDate();
             return $user;
         }
-        else {
-            return null;
-        }
+        return null;
     }
 }
