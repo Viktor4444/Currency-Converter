@@ -96,8 +96,17 @@ $ sudo systemctl reload apache2
 **CurCon** is very easy to use!
 Just go to http://localhost/web
 
-You will be immediately redirected to the login page, but don't worry! Just go to the registration page by clicking the button in the header of the site and enter your preferred login and password(then you will be automatically log in), and count the currency as much as you want!
+You will be immediately redirected to the login page:
 
+![Login page](images/screenshots/login_page.png)
+
+But don't worry! Just go to the registration page by clicking the button in the header of the site and enter your preferred login and password(then you will be automatically log in):
+
+![SignUp page](images/screenshots/signup_page.png)
+
+And count the currency as much as you want!
+
+![Main page](images/screenshots/main_page.png)
 
 ## License
 
